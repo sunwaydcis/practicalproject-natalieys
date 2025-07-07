@@ -7,7 +7,8 @@ import scalafx.Includes.*
 import ch.makery.address.util.DateUtil.*
 import javafx.event.ActionEvent
 import scalafx.beans.binding.Bindings
-import scalafx.scene.control.TextField
+import scalafx.scene.control.Alert.AlertType
+import scalafx.scene.control.{Alert, TextField}
 @FXML
 class PersonOverviewController():
   @FXML
@@ -71,10 +72,19 @@ class PersonOverviewController():
         birthdayLabel.text = ""
 
   @FXML
-  def handleDeletePerson(action: ActionEvent): Unit =
+  def handleDeletePerson(action: ActionEvent) =
     val selectedIndex = personTable.selectionModel().selectedIndex.value
     if (selectedIndex >= 0) then
-      personTable.items().remove(selectedIndex);
+      personTable.items().remove(selectedIndex)
+    else
+      // Nothing selected.
+      val alert = new Alert(AlertType.Error):
+        initOwner(MainApp.stage)
+        title = "No Selection"
+        headerText = "No Person Selected"
+        contentText = "Please select a person in the table."
+      alert.showAndWait()
+
 
 
 
